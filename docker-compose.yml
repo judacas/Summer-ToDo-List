@@ -10,8 +10,11 @@ services:
       - "5000:5000"
 
     environment:
-      MONGO_URI: mongodb://mongodb:27017/mydatabase
+      MONGO_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin
       GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
 
     depends_on:
       - mongodb
@@ -23,8 +26,14 @@ services:
     ports:
       - "27017:27017"
 
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+
     volumes:
       - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
 
 volumes:
   mongo_data:
