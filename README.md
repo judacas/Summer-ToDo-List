@@ -1,6 +1,6 @@
 # Summer Bucket List App
 
-A collaborative full-stack web application that allows users to create, manage, and visualize their summer bucket list activities. The app is built using Flask, MongoDB, Docker, Jenkins CI/CD, and Google Maps API to demonstrate a complete cloud-native DevOps workflow.
+A collaborative full-stack web application that allows users to create, manage, and track summer bucket list activities. The app is built using Flask, MongoDB, Docker, Jenkins CI/CD, and GitHub to demonstrate a complete cloud-native DevOps workflow.
 
 The system supports multi-user authentication, where each user has their own private lists and cannot access or modify other users’ data.
 
@@ -16,7 +16,7 @@ The system supports multi-user authentication, where each user has their own pri
 - Categorize items (Travel, Fun, Personal, Adventure, etc.)
 - Track progress with completion status
 - Store data persistently using MongoDB
-- Visualize locations using Google Maps (latitude/longitude from DB)
+- Store location coordinates (`latitude`/`longitude`) for seeded activities
 - Fully containerized using Docker & Docker Compose
 - Automated CI/CD pipeline using Jenkins
 
@@ -30,7 +30,7 @@ The system supports multi-user authentication, where each user has their own pri
 | Frontend | HTML, CSS, JavaScript |
 | Database | MongoDB |
 | DevOps / Tools | Docker, Docker Compose, Jenkins, GitHub |
-| APIs | Google Maps JavaScript API |
+| APIs | Flask REST API (JSON) |
 
 ---
 
@@ -127,9 +127,9 @@ The backend exposes RESTful APIs that return JSON only (no server-side rendering
 
 # 2.2 Architecture Overview
 
-The diagram shows how the system connects across development, CI/CD, backend services, database, and frontend visualization layers.
+The diagram shows how the system connects across development, CI/CD, backend services, and database layers.
 
-A developer push to GitHub triggers Jenkins via webhook. Jenkins executes the CI/CD pipeline which includes code checkout, Docker image build, automated testing, and deployment of containers. The Flask backend exposes REST APIs consumed by the frontend. MongoDB handles persistent storage for users, lists, and items. Google Maps is used only for visualization using stored latitude and longitude values from the database.
+A developer push to GitHub triggers Jenkins via webhook. Jenkins executes the CI/CD pipeline which includes code checkout, Docker image build, automated testing, and deployment of containers. The Flask backend exposes REST APIs consumed by the frontend. MongoDB handles persistent storage for users, lists, and items.
 
 ```mermaid
 flowchart LR
@@ -158,10 +158,6 @@ flowchart LR
     I[Login + Dashboard]
   end
 
-  subgraph external [External Services]
-    J[Google Maps API]
-  end
-
   D4 --> G
   G --> E
   G --> F
@@ -171,9 +167,6 @@ flowchart LR
 
   E --> F
   H --> E
-  H --> J
-
-  F --> J
 ```
 
 ---
@@ -192,7 +185,6 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Designed full CI/CD pipeline:
   - Checkout → Build → Test → Deploy
 - Configured GitHub webhook triggers
-- Configured Google Maps API key in Google Cloud Console with restrictions
 - Debugged pipeline failures and ensured stability
 
 ### Jenkins Contribution
@@ -227,10 +219,11 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Designed many-to-many relationship (lists ↔ items)
 - Built system architecture diagram
 - Ensured secure handling of API keys
+- Documented backend data model and setup instructions
 
 ### Jenkins Contribution
+- Owned Deploy-stage runtime database credential management for container deployment
 - Stored MongoDB credentials in Jenkins Credentials Manager
-- Stored Google Maps API key securely in Jenkins
 - Documented secure setup process
 
 ---
@@ -246,8 +239,8 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Added `/health` endpoint for monitoring
 
 ### Jenkins Contribution
-- Added dependency installation stage
-- Ensured Flask backend starts successfully in pipeline
+- Owned Build-stage app readiness tasks (Python dependency setup and Flask startup validation)
+- Added dependency installation and backend readiness checks used during CI runs
 
 ---
 
@@ -258,12 +251,12 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Built login and dashboard pages
 - Created bucket list management UI
 - Added progress tracking system
-- Integrated Google Maps visualization
+- Displayed item location metadata from seeded catalog data
 - Implemented category-based UI design
 
 ### Jenkins Contribution
-- Configured artifact archiving after deployment
-- Saved UI build screenshots for validation
+- Owned artifact archiving tasks in Deploy-stage outputs
+- Managed UI evidence capture (screenshots) for post-deploy validation records
 
 ---
 
@@ -274,7 +267,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Verified MongoDB connectivity
 - Tested authentication system
 - Validated API responses
-- Ensured Google Maps integration works with DB coordinates
+- Verified item location fields are returned correctly in API responses
 
 ### Jenkins Contribution
 - Owned Verify stage in pipeline
@@ -285,7 +278,65 @@ This project follows a CI/CD workflow where development flows from setup → inf
 
 # Setup Instructions
 
-Project-wide setup will be finalized once all team components are complete. Current backend setup instructions are in [app/README.md](app/README.md).
+Use this quick start for the backend stack (Flask + MongoDB via Docker Compose). For deeper backend details and manual API verification flow, see [app/README.md](app/README.md).
+
+## Prerequisites
+
+- Docker Desktop (with Docker Compose)
+- Git
+- Optional: Python for local scripts and curl-based checks
+
+## 1) Clone the repository
+
+```bash
+git clone https://github.com/judacas/Summer-ToDo-List
+cd Summer-ToDo-List
+```
+
+## 2) Configure environment
+
+Copy the root env template and fill values:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+
+- `MONGO_DATABASE`
+- `MONGO_USERNAME`
+- `MONGO_PASSWORD`
+- `SECRET_KEY`
+
+## 3) Start backend and database
+
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+Services:
+
+- Flask API: `http://localhost:5000`
+- MongoDB: `localhost:27017`
+
+## 4) Verify backend is running
+
+```bash
+curl http://localhost:5000/health
+```
+
+Expected:
+
+```json
+{"status":"ok"}
+```
+
+## 5) Useful docs
+
+- Backend setup/details: [app/README.md](app/README.md)
+- Full API route reference: [app/backend/README.md](app/backend/README.md)
 
 ---
 
