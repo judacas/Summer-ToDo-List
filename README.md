@@ -40,8 +40,12 @@ The system supports multi-user authentication, where each user has their own pri
 
 ```text
 Summer-ToDo-List/
+├── .dockerignore                  # Docker build ignore rules
+├── .env                           # Local environment variables (not for commit)
+├── .gitignore                     # Git ignore patterns
 ├── app/
 │   ├── app.py                     # Flask entrypoint
+│   ├── static/                    # Frontend static assets (CSS/JS)
 │   ├── requirements.txt           # Backend runtime dependencies
 │   ├── README.md                  # Backend setup guide
 │   └── backend/
@@ -61,9 +65,10 @@ Summer-ToDo-List/
 │   ├── test_env.py                # Environment/config tests
 │   ├── test_mongo.py              # Mongo connectivity tests
 │   └── test_routes.py             # API route tests
-├── .env.example                   # Example environment variables
 ├── docker-compose.yml             # Multi-container orchestration
 ├── dockerfile                     # Flask image build spec
+├── Jenkinsfile                    # Jenkins CI/CD pipeline definition
+├── LICENSE                        # Project license
 ├── requirements-test.txt          # Test dependencies
 └── README.md                      # Project overview/documentation
 ```
