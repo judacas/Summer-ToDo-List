@@ -36,52 +36,56 @@ The system supports multi-user authentication, where each user has their own pri
 
 # Database Design
 
-The backend follows a relational-style schema design using MongoDB collections.
+The backend follows a relational-style schema design using MongoDB collections. Each document has MongoDB’s default `_id` (ObjectId); other collections reference those IDs in foreign-key-style fields.
 
-### Users Collection
+### `users`
 Stores authentication data.
 
-- user_id
-- username
-- password
+- `_id`
+- `username` (unique)
+- `password_hash` (set at signup; plain passwords are not stored)
 
 ---
 
-### Seeded Items Collection
-Stores all available bucket list activities.
+### `catalog_items`
+Stores the seeded master catalog of bucket list activities (coordinates used for maps).
 
-- item_id
-- title
-- category
-- description
-- latitude
-- longitude
+- `_id`
+- `name`
+- `category`
+- `due_date`
+- `location.latitude`
+- `location.longitude`
 
 ---
 
-### Lists Collection
+### `lists`
 Stores user-created bucket lists.
 
-- list_id
-- user_id (foreign key)
-- list_name
+- `_id`
+- `user_id` (references `users._id`)
+- `name`
 
 Relationship:
+
 - One user → Many lists
 
 ---
 
-### List_Items Collection (Join Table)
-Handles many-to-many relationship between lists and items.
+### `list_items` (join collection)
+Handles the many-to-many relationship between lists and catalog items; completion is per list entry.
 
-- list_item_id
-- list_id
-- item_id
-- completed_status (true/false)
+- `_id`
+- `list_id` (references `lists._id`)
+- `catalog_item_id` (references `catalog_items._id`)
+- `completed` (boolean)
 
 Relationship:
-- One list → Many items
-- One item → Many lists
+
+- One list → Many catalog items (via join rows)
+- One catalog item → Many lists (via join rows)
+
+Unique index on `(list_id, catalog_item_id)` prevents duplicates.
 
 ---
 
