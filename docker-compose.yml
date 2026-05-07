@@ -3,7 +3,9 @@ version: '3.9'
 services:
 
   flask-app:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfile
     container_name: flask-app
 
     ports:

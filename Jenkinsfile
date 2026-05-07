@@ -16,6 +16,12 @@ pipeline {
         // Expected container names from docker-compose.yml.
         FLASK_CONTAINER = 'flask-app'
         MONGO_CONTAINER = 'mongodb'
+        // Backend/API environment needed for Docker Compose startup in CI so it doesn't crash
+        MONGO_DATABASE = 'summer_bucket_list'
+        MONGO_USERNAME = 'admin'
+        MONGO_PASSWORD = 'password'
+        SECRET_KEY = 'replace-me-with-a-long-random-value'
+        GOOGLE_MAPS_API_KEY = 'replace-me'
     }
 
     stages {

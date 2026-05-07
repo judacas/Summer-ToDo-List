@@ -289,8 +289,10 @@ This project follows a CI/CD workflow where development flows from setup → inf
 
 ### Jenkins Contribution
 
-- Owned Build-stage app readiness tasks (Python dependency setup and Flask startup validation)
-- Added dependency installation and backend readiness checks used during CI runs
+- Defined backend/API environment variables required for Jenkins Docker Compose startup, mirroring the repo's local `.env` defaults
+- Provided the Flask `/health` endpoint used by the Jenkins health check
+- Supported Jenkins container readiness validation for the Flask API service
+- Tested jenkins and ran jenkins server locally
 
 ---
 
@@ -402,4 +404,3 @@ Expected:
 - Mobile responsiveness improvements
 - Cloud deployment (AWS / Azure / GCP)
 - Kubernetes orchestration
-
