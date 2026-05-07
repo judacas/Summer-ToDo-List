@@ -24,13 +24,49 @@ The system supports multi-user authentication, where each user has their own pri
 
 # Tech Stack
 
-| Category | Tools & Technologies Used |
-|------|------------------|
-| Backend | Python, Flask, PyMongo |
-| Frontend | HTML, CSS, JavaScript |
-| Database | MongoDB |
+
+| Category       | Tools & Technologies Used               |
+| -------------- | --------------------------------------- |
+| Backend        | Python, Flask, PyMongo                  |
+| Frontend       | HTML, CSS, JavaScript                   |
+| Database       | MongoDB                                 |
 | DevOps / Tools | Docker, Docker Compose, Jenkins, GitHub |
-| APIs | Flask REST API (JSON) |
+| APIs           | Flask REST API (JSON)                   |
+
+
+---
+
+# Repository Structure
+
+```text
+Summer-ToDo-List/
+├── app/
+│   ├── app.py                     # Flask entrypoint
+│   ├── requirements.txt           # Backend runtime dependencies
+│   ├── README.md                  # Backend setup guide
+│   └── backend/
+│       ├── __init__.py            # App factory wiring
+│       ├── auth.py                # Auth/token helpers
+│       ├── config.py              # Backend configuration
+│       ├── db.py                  # MongoDB connection helpers
+│       ├── repositories.py        # Data access layer
+│       ├── routes.py              # API routes
+│       ├── serialization.py       # Response shaping utilities
+│       └── README.md              # API endpoint reference
+├── mongo-init/
+│   ├── 01_indexes.js              # Mongo indexes and constraints
+│   └── 02_catalog_seed.js         # Seeded catalog items
+├── tests/
+│   ├── conftest.py                # Shared pytest fixtures/config
+│   ├── test_env.py                # Environment/config tests
+│   ├── test_mongo.py              # Mongo connectivity tests
+│   └── test_routes.py             # API route tests
+├── .env.example                   # Example environment variables
+├── docker-compose.yml             # Multi-container orchestration
+├── dockerfile                     # Flask image build spec
+├── requirements-test.txt          # Test dependencies
+└── README.md                      # Project overview/documentation
+```
 
 ---
 
@@ -39,6 +75,7 @@ The system supports multi-user authentication, where each user has their own pri
 The backend follows a relational-style schema design using MongoDB collections. Each document has MongoDB’s default `_id` (ObjectId); other collections reference those IDs in foreign-key-style fields.
 
 ### `users`
+
 Stores authentication data.
 
 - `_id`
@@ -48,6 +85,7 @@ Stores authentication data.
 ---
 
 ### `catalog_items`
+
 Stores the seeded master catalog of bucket list activities (coordinates used for maps).
 
 - `_id`
@@ -60,6 +98,7 @@ Stores the seeded master catalog of bucket list activities (coordinates used for
 ---
 
 ### `lists`
+
 Stores user-created bucket lists.
 
 - `_id`
@@ -73,6 +112,7 @@ Relationship:
 ---
 
 ### `list_items` (join collection)
+
 Handles the many-to-many relationship between lists and catalog items; completion is per list entry.
 
 - `_id`
@@ -125,7 +165,7 @@ The backend exposes RESTful APIs that return JSON only (no server-side rendering
 
 ---
 
-# 2.2 Architecture Overview
+# Architecture Overview
 
 The diagram shows how the system connects across development, CI/CD, backend services, and database layers.
 
@@ -169,6 +209,8 @@ flowchart LR
   H --> E
 ```
 
+
+
 ---
 
 # Team Responsibilities
@@ -180,6 +222,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 1. Devanshi — CI/CD Pipeline & Orchestration
 
 ### Pipeline Setup
+
 - Set up Jenkins server
 - Integrated Jenkins with GitHub repository
 - Designed full CI/CD pipeline:
@@ -188,6 +231,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Debugged pipeline failures and ensured stability
 
 ### Jenkins Contribution
+
 - Owned full Jenkins pipeline architecture
 - Managed GitHub → Jenkins integration
 - Configured automated pipeline execution
@@ -197,6 +241,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 2. Aarav — Docker & Containerization
 
 ### Containerization Layer
+
 - Created Dockerfile for Flask backend
 - Built Docker Compose for Flask + MongoDB
 - Configured persistent MongoDB volumes
@@ -204,6 +249,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Ensured container networking and service communication
 
 ### Jenkins Contribution
+
 - Owned Build stage in CI/CD pipeline
 - Implemented Docker build and deployment commands in Jenkinsfile
 - Ensured successful container startup during pipeline execution
@@ -213,6 +259,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 3. Jasmine — MongoDB Configuration, Security & Infrastructure Setup
 
 ### Database + Infrastructure Layer
+
 - Designed MongoDB schema structure
 - Configured user authentication database
 - Created seeded items dataset with coordinates
@@ -222,6 +269,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Documented backend data model and setup instructions
 
 ### Jenkins Contribution
+
 - Owned Deploy-stage runtime database credential management for container deployment
 - Stored MongoDB credentials in Jenkins Credentials Manager
 - Documented secure setup process
@@ -231,6 +279,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 4. Daniel — Flask Backend Development
 
 ### Backend Development
+
 - Built RESTful Flask API (JSON only)
 - Implemented authentication system (signup/login)
 - Developed CRUD operations for lists and items
@@ -239,6 +288,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Added `/health` endpoint for monitoring
 
 ### Jenkins Contribution
+
 - Owned Build-stage app readiness tasks (Python dependency setup and Flask startup validation)
 - Added dependency installation and backend readiness checks used during CI runs
 
@@ -247,6 +297,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 5. Lavanya — Frontend/UI Development
 
 ### User Interface Development
+
 - Designed frontend using HTML/CSS/JavaScript
 - Built login and dashboard pages
 - Created bucket list management UI
@@ -255,6 +306,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Implemented category-based UI design
 
 ### Jenkins Contribution
+
 - Owned artifact archiving tasks in Deploy-stage outputs
 - Managed UI evidence capture (screenshots) for post-deploy validation records
 
@@ -263,6 +315,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 ## 6. Maia — Testing & Verification
 
 ### Quality Assurance
+
 - Developed API test scripts
 - Verified MongoDB connectivity
 - Tested authentication system
@@ -270,6 +323,7 @@ This project follows a CI/CD workflow where development flows from setup → inf
 - Verified item location fields are returned correctly in API responses
 
 ### Jenkins Contribution
+
 - Owned Verify stage in pipeline
 - Integrated automated testing into Jenkins
 - Ensured pipeline failure on test errors
@@ -348,3 +402,4 @@ Expected:
 - Mobile responsiveness improvements
 - Cloud deployment (AWS / Azure / GCP)
 - Kubernetes orchestration
+
