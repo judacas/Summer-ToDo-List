@@ -15,6 +15,7 @@ services:
       MONGO_DATABASE: ${MONGO_DATABASE}
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
 
     depends_on:
       - mongodb
