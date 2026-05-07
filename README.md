@@ -91,7 +91,10 @@ Unique index on `(list_id, catalog_item_id)` prevents duplicates.
 
 # API Design (Flask REST API)
 
-The backend exposes RESTful APIs that return JSON only (no server-side rendering).
+The backend exposes RESTful APIs that return JSON only (no server-side rendering). Backend setup and API-specific documentation live with the Flask code:
+
+- [Backend setup](app/README.md)
+- [API route reference](app/backend/README.md)
 
 ---
 
@@ -282,17 +285,15 @@ This project follows a CI/CD workflow where development flows from setup → inf
 
 # Setup Instructions
 
+Project-wide setup will be finalized once all team components are complete. Current backend setup instructions are in [app/README.md](app/README.md).
 
 ---
 
 # Future Improvements
 
-- Password hashing (bcrypt)
-- JWT-based authentication
 - Role-based access control
 - Search & filtering for items
 - Sharing lists between users (optional feature)
 - Mobile responsiveness improvements
 - Cloud deployment (AWS / Azure / GCP)
 - Kubernetes orchestration
-```
