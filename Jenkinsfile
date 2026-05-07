@@ -12,7 +12,7 @@ pipeline {
         // Compose v2 command (Docker Desktop on Unix/macOS uses "docker compose").
         COMPOSE_CMD = 'docker compose'
         // Health endpoint exposed by the Flask container on host port 5001.
-        HEALTH_URL = 'http://localhost:5001/health'
+        HEALTH_URL = 'http://flask-app:5000/health'
         // Expected container names from docker-compose.yml.
         FLASK_CONTAINER = 'flask-app'
         MONGO_CONTAINER = 'mongodb'
