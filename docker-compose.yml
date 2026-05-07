@@ -7,7 +7,7 @@ services:
     container_name: flask-app
 
     ports:
-      - "5000:5000"
+      - "5001:5000"
 
     environment:
       MONGO_URI: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin

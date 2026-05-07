@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Summer Shore List</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="scene" aria-hidden="true">
+      <div class="sun"></div>
+      <div class="cloud cloud-one"></div>
+      <div class="cloud cloud-two"></div>
+      <div class="water">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="shoreline"></div>
+      <div class="sand"></div>
+      <div class="umbrella umbrella-coral">
+        <span class="canopy"></span>
+        <span class="pole"></span>
+        <span class="shade"></span>
+      </div>
+      <div class="umbrella umbrella-blue">
+        <span class="canopy"></span>
+        <span class="pole"></span>
+        <span class="shade"></span>
+      </div>
+      <div class="umbrella umbrella-yellow">
+        <span class="canopy"></span>
+        <span class="pole"></span>
+        <span class="shade"></span>
+      </div>
+    </div>
+
+    <main class="app-shell">
+      <section class="topbar" aria-label="Application header">
+        <div>
+          <p class="eyebrow">Tampa summer bucket list</p>
+          <h1>Summer Shore List</h1>
+        </div>
+        <div class="session">
+          <span id="currentUser" class="current-user"></span>
+          <button id="logoutButton" class="ghost-button hidden" type="button">Log out</button>
+        </div>
+      </section>
+
+      <section id="authPanel" class="auth-panel">
+        <div class="auth-copy">
+          <p class="eyebrow">Catch the season</p>
+          <h2>Plan beach days, city walks, food stops, and sunset adventures.</h2>
+          <p>
+            Sign in to create private lists, pick from the seeded summer catalog, and
+            track what you have finished.
+          </p>
+        </div>
+        <form id="authForm" class="auth-card">
+          <div class="mode-switch" role="tablist" aria-label="Authentication mode">
+            <button id="loginMode" class="active" type="button">Login</button>
+            <button id="signupMode" type="button">Sign up</button>
+          </div>
+          <label>
+            Username
+            <input id="username" autocomplete="username" required minlength="2" />
+          </label>
+          <label>
+            Password
+            <input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              minlength="4"
+            />
+          </label>
+          <button id="authSubmit" class="primary-button" type="submit">Ride the wave</button>
+          <p id="authMessage" class="message" role="status"></p>
+        </form>
+      </section>
+
+      <section id="dashboard" class="dashboard hidden" aria-label="Bucket list dashboard">
+        <aside class="lists-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Your shoreline</p>
+              <h2>Lists</h2>
+            </div>
+          </div>
+          <form id="newListForm" class="inline-form">
+            <input id="newListName" placeholder="New list name" required />
+            <button class="icon-button" type="submit" aria-label="Create list">+</button>
+          </form>
+          <div id="lists" class="list-stack"></div>
+        </aside>
+
+        <section class="main-panel">
+          <div class="panel-heading list-heading">
+            <div>
+              <p class="eyebrow">Selected list</p>
+              <h2 id="activeListName">Choose a list</h2>
+            </div>
+            <button id="deleteListButton" class="ghost-button hidden" type="button">Delete</button>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span id="progressText">0 of 0 complete</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+              <span id="progressBar"></span>
+            </div>
+          </div>
+
+          <div id="selectedItems" class="selected-items empty-state">
+            Create or choose a list to start planning.
+          </div>
+        </section>
+
+        <section class="catalog-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Summer catalog</p>
+              <h2>Add ideas</h2>
+            </div>
+          </div>
+          <div class="filters">
+            <input id="searchInput" placeholder="Search activities" />
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="">All categories</option>
+            </select>
+          </div>
+          <div id="catalogItems" class="catalog-grid"></div>
+        </section>
+      </section>
+
+      <p id="toast" class="toast hidden" role="status"></p>
+    </main>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
